@@ -10055,19 +10055,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\stav\\.nuget\\packages\\": {}
+    "C:\\Users\\Fullstack\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\stav\\Desktop\\course\\midServer\\virtualLibrary\\VirtualLibrary.csproj",
+      "projectUniqueName": "C:\\Users\\Fullstack\\Documents\\GitHub\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj",
       "projectName": "VirtualLibrary",
-      "projectPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\virtualLibrary\\VirtualLibrary.csproj",
-      "packagesPath": "C:\\Users\\stav\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\virtualLibrary\\obj\\",
+      "projectPath": "C:\\Users\\Fullstack\\Documents\\GitHub\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj",
+      "packagesPath": "C:\\Users\\Fullstack\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Fullstack\\Documents\\GitHub\\Book-Store-Server\\VirtualLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\stav\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Fullstack\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
