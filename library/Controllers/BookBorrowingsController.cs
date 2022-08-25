@@ -17,12 +17,20 @@ namespace library.Controllers
         private readonly VirtualLibraryContext _context;
         private readonly IJwtService _jwtService;
         private readonly ILogger _logger;
+        private readonly IBookBorrowingsService _bookBorrowingsService;
 
-        public BookBorrowingsController(VirtualLibraryContext context, IJwtService jwtService, ILogger<BookBorrowingsController> logger)
+        public BookBorrowingsController
+        (
+            VirtualLibraryContext context,
+            IJwtService jwtService,
+            IBookBorrowingsService bookBorrowingsService,
+            ILogger<BookBorrowingsController> logger
+        )
         {
             _context = context;
             _jwtService = jwtService;
             _logger = logger;
+            _bookBorrowingsService = bookBorrowingsService;
         }
 
         // GET: api/BookBorrowings
@@ -96,11 +104,13 @@ namespace library.Controllers
           }
           try
            {
-            
+             _logger.LogInformation("----------------------------------------reqC: {BB} ", Request.Cookies);
             var jwt = Request.Cookies["jwt"];
+            _logger.LogInformation("----------------------------------------jwt: {BB} ", jwt);
+
             
             if(jwt == null){
-                return Problem("user not loged in");
+                return Problem("Customer not loged in");
             }
 
             var token = _jwtService.Verify(jwt);
@@ -113,10 +123,20 @@ namespace library.Controllers
 
              var theBook = _context.BooksLists.Find(bookId);
 
+              _logger.LogInformation("----------------------------------------book: {BB} ", theBook);
+           
+             _logger.LogInformation("----------------------------------------theCustomer: {BB} ", theCustomer);
+
              if(theCustomer == null || theBook == null)
              {
               return Problem("User or book dose not exists on DB."); 
-             } 
+             }
+             
+             
+             if( await _bookBorrowingsService.IsUserHaveBook(userId,bookId)) 
+             {
+                return Problem("User Allready lented Book"); 
+             }
 
              if(theBook.NumOfCopies < 1)
              {

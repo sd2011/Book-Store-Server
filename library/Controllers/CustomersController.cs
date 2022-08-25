@@ -52,6 +52,18 @@ namespace library.Controllers
             return customer;
         }
 
+         // GET: api/Customers/logout
+        [HttpGet("logout")]
+         public  IActionResult logOut()
+        {
+             Response.Cookies.Delete("jwt");
+             
+             return Ok(new
+            {
+                message = "success"
+            });
+        }
+
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -121,13 +133,12 @@ namespace library.Controllers
 
             Response.Cookies.Append("jwt",jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true 
             });
 
-             return Ok(new
-            {
-                message = "success"
-            });
+             return theCustomer;
         }
 
         // DELETE: api/Customers/5

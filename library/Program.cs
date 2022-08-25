@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IBookBorrowingsService, BookBorrowingsService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
@@ -28,7 +29,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>{
         options.AddPolicy("corspolicy", policy =>{
-            policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            policy.WithOrigins(new []{"http://localhost:3000"}).AllowCredentials().AllowAnyMethod().AllowAnyHeader();
         });
 });
 
