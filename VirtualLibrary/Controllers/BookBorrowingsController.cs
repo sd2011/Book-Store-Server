@@ -15,12 +15,22 @@ namespace VirtualLibrary.Controllers
     public class BookBorrowingsController : ControllerBase
     {
         private readonly VirtualLibraryContext _context;
-        private readonly JwtService _jwtService;
+        private readonly IJwtService _jwtService;
+        private readonly ILogger _logger;
+        private readonly IBookBorrowingsService _bookBorrowingsService;
 
-        public BookBorrowingsController(VirtualLibraryContext context, JwtService jwtService)
+        public BookBorrowingsController
+        (
+            VirtualLibraryContext context,
+            IJwtService jwtService,
+            IBookBorrowingsService bookBorrowingsService,
+            ILogger<BookBorrowingsController> logger
+        )
         {
             _context = context;
             _jwtService = jwtService;
+            _logger = logger;
+            _bookBorrowingsService = bookBorrowingsService;
         }
 
         // GET: api/BookBorrowings
@@ -94,27 +104,57 @@ namespace VirtualLibrary.Controllers
           }
           try
            {
-            
+             _logger.LogInformation("----------------------------------------reqC: {BB} ", Request.Cookies);
             var jwt = Request.Cookies["jwt"];
+            _logger.LogInformation("----------------------------------------jwt: {BB} ", jwt);
+
+            
+            if(jwt == null){
+                return Problem("Customer not loged in");
+            }
 
             var token = _jwtService.Verify(jwt);
-
+        
             int userId = int.Parse(token.Issuer);
-                
+
            // var allCustomers = await _context.Customers.ToListAsync();
              
              var theCustomer = _context.Customers.Find(userId);
 
              var theBook = _context.BooksLists.Find(bookId);
 
+              _logger.LogInformation("----------------------------------------book: {BB} ", theBook);
+           
+             _logger.LogInformation("----------------------------------------theCustomer: {BB} ", theCustomer);
+
              if(theCustomer == null || theBook == null)
              {
-              return Problem("User or book dose not exists on DB"); 
-             } 
+              return Problem("User or book dose not exists on DB."); 
+             }
+             
+             
+             if( await _bookBorrowingsService.IsUserHaveBook(userId,bookId)) 
+             {
+                return Problem("User Allready lented Book"); 
+             }
+
+             if(theBook.NumOfCopies < 1)
+             {
+              return Problem("No copies of the book left."); 
+                    
+             }
+
+
 
              BooksBorrowing bookedBorrowed = new BooksBorrowing(userId, bookId);
+            _logger.LogInformation("----------------------------------------bookedBorrowed: {BB} ", bookedBorrowed);
 
-             _context.BooksBorrowings.Add(bookedBorrowed);
+
+              _context.BooksBorrowings.Add(bookedBorrowed);
+
+              theBook.NumOfCopies--;
+
+              _context.Entry(theBook).State = EntityState.Modified;
 
              await _context.SaveChangesAsync();
 

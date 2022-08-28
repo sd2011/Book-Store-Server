@@ -1,16 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace VirtualLibrary.Models
 {
     public partial class BooksList
     {
-        public BooksList()
-        {
-            BooksBorrowingBooks = new HashSet<BooksBorrowing>();
-            BooksBorrowingIdNavigations = new HashSet<BooksBorrowing>();
-        }
-
+      
         public int BookId { get; set; }
         public string? Genre { get; set; }
         public string? PublishedBookDate { get; set; }
@@ -22,7 +17,12 @@ namespace VirtualLibrary.Models
         public string? ImageLink { get; set; }
         public string? Country { get; set; }
 
-        public virtual ICollection<BooksBorrowing> BooksBorrowingBooks { get; set; }
-        public virtual ICollection<BooksBorrowing> BooksBorrowingIdNavigations { get; set; }
+    public BooksList(string imageLink, string title, int bookId ){
+
+        BookId = bookId; 
+        ImageLink  = imageLink;
+        Title = title;
+
+        }
     }
 }

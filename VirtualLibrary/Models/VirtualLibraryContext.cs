@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -19,6 +19,9 @@ namespace VirtualLibrary.Models
         public virtual DbSet<BooksBorrowing> BooksBorrowings { get; set; } = null!;
         public virtual DbSet<BooksList> BooksLists { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<Review> Reviews { get; set; } = null!;
+        public virtual DbSet<ReviewAndCustomerName> ReviewsAndCustomerNames { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +34,63 @@ namespace VirtualLibrary.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             modelBuilder.Entity<Review>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.BookId })
+                    .HasName("Rpk");
+
+                entity.ToTable("Review");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BookId).HasColumnName("bookId");
+
+                entity.Property(e => e.ReviewDate)
+                    .HasColumnType("date")
+                    .HasColumnName("reviewDate");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(50)
+                    .HasColumnName("title");
+
+                entity.Property(e => e.Rate).HasColumnName("rate");
+
+
+                entity.Property(e => e.ReviewText)
+                    .HasColumnName("review");
+
+            });
+
+            modelBuilder.Entity<ReviewAndCustomerName>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.BookId })
+                    .HasName("RACpk");
+
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BookId).HasColumnName("bookId");
+
+                entity.Property(e => e.ReviewDate)
+                    .HasColumnType("date")
+                    .HasColumnName("reviewDate");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(50)
+                    .HasColumnName("title");
+
+                entity.Property(e => e.Rate).HasColumnName("rate");
+
+
+                entity.Property(e => e.ReviewText)
+                    .HasColumnName("review");
+
+                entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .HasColumnName("userName");
+
+            });
+
             modelBuilder.Entity<BooksBorrowing>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.BookId, e.BorrowedDateBegining })
@@ -57,17 +117,6 @@ namespace VirtualLibrary.Models
                     .HasColumnName("returnedBookDate")
                     .HasDefaultValueSql("(CONVERT([date],getdate(),(105)))");
 
-                entity.HasOne(d => d.Book)
-                    .WithMany(p => p.BooksBorrowingBooks)
-                    .HasForeignKey(d => d.BookId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BooksBorr__bookI__403A8C7D");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.BooksBorrowingIdNavigations)
-                    .HasForeignKey(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BooksBorrowi__id__3C69FB99");
             });
 
             modelBuilder.Entity<BooksList>(entity =>

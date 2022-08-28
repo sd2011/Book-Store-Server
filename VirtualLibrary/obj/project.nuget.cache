@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jbPmhPgLhpCse16yKA6iwuBJ04iBEr1/2z3Q1jIdo97dBGx8QSBCZzZzdYui6eJbiPtCFwRVRcOQXfOp+VYFUg==",
+  "dgSpecHash": "aqgTFCDZWQ5mQD8sTNA//KRtplP5UeHMTm9AKDvHg4bR4y7wfcF8v0E7Vz3UnEnshTSraeldxnlSkyW94d9rRw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\VirtualLibrary.csproj",
+  "projectFilePath": "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stav\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\stav\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

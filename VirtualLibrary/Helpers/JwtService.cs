@@ -6,9 +6,17 @@ using Microsoft.IdentityModel.Tokens;
 namespace VirtualLibrary.Helpers
 {
 
-    public class JwtService
+    public interface IJwtService
+    {   
+        string Generate(int id);
+        JwtSecurityToken Verify(string jwt);
+    }
+
+    public class JwtService : IJwtService
     {
         private string secureKey = "this is a very secure key";
+        
+       
 
         public string Generate(int id)
         {

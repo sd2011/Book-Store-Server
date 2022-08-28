@@ -15,9 +15,9 @@ namespace VirtualLibrary.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly VirtualLibraryContext _context;
-        private readonly JwtService _JwtService;
+        private readonly IJwtService _JwtService;
 
-        public CustomersController(VirtualLibraryContext context,JwtService JwtService )
+        public CustomersController(VirtualLibraryContext context, IJwtService JwtService )
         {
             _context = context;
             _JwtService = JwtService;
@@ -32,6 +32,35 @@ namespace VirtualLibrary.Controllers
               return NotFound();
           }
             return await _context.Customers.ToListAsync();
+        }
+
+        // GET: api/Customers/is_logged
+        [HttpGet("is_logged")]
+        public async Task<ActionResult<Customer>> isLogged()
+        {
+          if (_context.Customers == null)
+          {
+              return NotFound();
+          }
+              var jwt = Request.Cookies["jwt"];
+
+            
+            if(jwt == null){
+                return Problem("Customer not loged in");
+            }
+
+            var token = _JwtService.Verify(jwt);
+        
+            int userId = int.Parse(token.Issuer);
+
+           // var allCustomers = await _context.Customers.ToListAsync();
+             
+             var theCustomer =  await _context.Customers.FindAsync(userId);
+             if(theCustomer == null)
+             {
+                return Problem("Token dont match any user in DB");
+             }
+            return theCustomer;
         }
 
         // GET: api/Customers/5
@@ -50,6 +79,18 @@ namespace VirtualLibrary.Controllers
             }
 
             return customer;
+        }
+
+         // GET: api/Customers/logout
+        [HttpGet("logout")]
+         public  IActionResult logOut()
+        {
+             Response.Cookies.Delete("jwt");
+             
+             return Ok(new
+            {
+                message = "success"
+            });
         }
 
         // PUT: api/Customers/5
@@ -95,7 +136,7 @@ namespace VirtualLibrary.Controllers
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return await PostCustomer(customer.Email,customer.Password);
         }
 
         [HttpPost("login")]
@@ -121,13 +162,12 @@ namespace VirtualLibrary.Controllers
 
             Response.Cookies.Append("jwt",jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true 
             });
 
-             return Ok(new
-            {
-                message = "success"
-            });
+             return theCustomer;
         }
 
         // DELETE: api/Customers/5

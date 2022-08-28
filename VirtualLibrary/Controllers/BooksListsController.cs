@@ -30,6 +30,16 @@ namespace VirtualLibrary.Controllers
           }
             return await _context.BooksLists.ToListAsync();
         }
+        // GET: api/BooksLists/newArrivals
+        [HttpGet("newArrivals")]
+        public async Task<ActionResult<IEnumerable<BooksList>>> GetNewArrivals()
+        {
+          if (_context.BooksLists == null)
+          {
+              return NotFound();
+          }
+            return await _context.BooksLists.OrderByDescending(o=>o.BookId).Take(3).ToListAsync();
+        }
 
         // GET: api/BooksLists/5
         [HttpGet("{id}")]
@@ -48,6 +58,28 @@ namespace VirtualLibrary.Controllers
 
             return booksList;
         }
+
+        // GET: api/BooksLists/bestSeller
+        [HttpGet("bestSeller")]
+        public async Task<IEnumerable<BooksList>> MostCommonBook(){  
+           
+
+         var BooksBorrowingorderd = await _context.BooksBorrowings.ToListAsync();
+         var booksList = await _context.BooksLists.ToListAsync();
+         var BooksBorrowingorderdNow = BooksBorrowingorderd.GroupBy(x => x.BookId).OrderByDescending(x => x.Count());
+            
+
+            var top3BooksBorrowing = from book1 in BooksBorrowingorderdNow
+            join book2 in booksList
+            on book1.Key equals book2.BookId into joinedBooks
+            from book3 in joinedBooks
+
+            select new BooksList(book3.ImageLink ,book3.Title , book3.BookId );
+
+               return 
+               top3BooksBorrowing.Take(3);
+        }
+
 
         // PUT: api/BooksLists/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

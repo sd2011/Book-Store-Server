@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\VirtualLibrary.csproj": {}
+    "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\VirtualLibrary.csproj": {
+    "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\VirtualLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj",
         "projectName": "VirtualLibrary",
-        "projectPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\VirtualLibrary.csproj",
+        "projectPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\VirtualLibrary.csproj",
         "packagesPath": "C:\\Users\\stav\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\VirtualLibrary\\obj\\",
+        "outputPath": "C:\\Users\\stav\\Desktop\\course\\midServer\\Book-Store-Server\\VirtualLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\stav\\AppData\\Roaming\\NuGet\\NuGet.Config"
